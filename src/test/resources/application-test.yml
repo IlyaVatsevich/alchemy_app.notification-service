@@ -1,0 +1,41 @@
+spring:
+  mail:
+    host: 127.0.0.1
+    port: 3025
+    username: test
+    password: test
+    protocol: smtp
+    test-connection: true
+    properties:
+      mail:
+        smtp:
+          starttls:
+            required: false
+            enable: false
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+      group-id: ${kafka.topic.group_id}
+      auto-offset-reset: earliest
+kafka:
+  topic:
+    name: "notification_topic"
+    group_id: "notification_id"
+    partitions: 1
+    replicas: 1
+task_custom:
+  execution:
+    pool:
+      core-size: 5
+      max-size: 10
+      queue-capacity: 25
+    shutdown:
+      await-termination: true

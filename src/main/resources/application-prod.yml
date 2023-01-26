@@ -1,0 +1,40 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: legenda5511@gmail.com
+    password: vaixujnnrjnnupob
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    protocol: smtp
+    # tgnuotehjvlpnwct ilya.vatsevich@gmail.com
+    # vaixujnnrjnnupob legenda5511@gmail.com
+  kafka:
+    consumer:
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVER}
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+      group-id: ${kafka.topic.group_id}
+      auto-offset-reset: earliest
+server:
+  port: 8081
+kafka:
+  topic:
+    name: "notification_topic"
+    group_id: "notification_id"
+task_custom:
+  execution:
+    pool:
+      core-size: 5
+      max-size: 10
+      queue-capacity: 25
+    shutdown:
+      await-termination: true
